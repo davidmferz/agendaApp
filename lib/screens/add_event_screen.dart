@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'event_summary_screen.dart';
 
 class AddEventScreen extends StatefulWidget {
   const AddEventScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddEventScreenState createState() => _AddEventScreenState();
 }
 
 class _AddEventScreenState extends State<AddEventScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+
   String _title = '';
   String _eventType = '';
   DateTime? _startDate;
   DateTime? _endDate;
   bool _allDay = false;
   String _description = '';
+
+  @override
+  void dispose() {
+    _startDateController.dispose();
+    _endDateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +66,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 },
               ),
               TextFormField(
+                controller: _startDateController,
                 decoration: const InputDecoration(labelText: 'Fecha inicio'),
+                readOnly: true,
                 onTap: () async {
                   DateTime? picked = await _selectDate(context);
                   if (picked != null) {
                     setState(() {
                       _startDate = picked;
+                      _startDateController.text =
+                          DateFormat('dd-MM-yyyy').format(picked);
                     });
                   }
                 },
@@ -73,12 +87,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 },
               ),
               TextFormField(
+                controller: _endDateController,
                 decoration: const InputDecoration(labelText: 'Fecha fin'),
+                readOnly: true,
                 onTap: () async {
                   DateTime? picked = await _selectDate(context);
                   if (picked != null) {
                     setState(() {
                       _endDate = picked;
+                      _endDateController.text =
+                          DateFormat('dd-MM-yyyy').format(picked);
                     });
                   }
                 },

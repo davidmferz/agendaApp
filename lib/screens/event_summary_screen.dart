@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Importa el paquete intl
 
 class EventSummaryScreen extends StatelessWidget {
   final String title;
@@ -20,6 +21,9 @@ class EventSummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormat =
+        DateFormat('dd-MM-yyyy'); // Formateador de fechas
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Resumen del Evento'),
@@ -29,12 +33,84 @@ class EventSummaryScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nombre del evento: $title'),
-            Text('Tipo de evento: $eventType'),
-            Text('Fecha inicio: ${startDate.toLocal()}'),
-            Text('Fecha fin: ${endDate.toLocal()}'),
-            Text('Todo el día: $allDay'),
-            Text('Descripción: $description'),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Regresar'),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Table(
+              border: TableBorder.all(),
+              columnWidths: const {
+                0: FlexColumnWidth(1),
+                1: FlexColumnWidth(2),
+              },
+              children: [
+                TableRow(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Nombre del evento'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(title),
+                  ),
+                ]),
+                TableRow(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Tipo de evento'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(eventType),
+                  ),
+                ]),
+                TableRow(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Fecha inicio'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(dateFormat.format(startDate)),
+                  ),
+                ]),
+                TableRow(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Fecha fin'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(dateFormat.format(endDate)),
+                  ),
+                ]),
+                TableRow(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Todo el día'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(allDay ? 'Sí' : 'No'),
+                  ),
+                ]),
+                TableRow(children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Descripción'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(description),
+                  ),
+                ]),
+              ],
+            ),
           ],
         ),
       ),
